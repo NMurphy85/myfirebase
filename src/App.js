@@ -12,17 +12,18 @@ function App() {
     
     onAuthStateChanged(auth, (user) =>{
       setLoading(false)
-      console.log(user.email[0].toUpperCase())
-      if (user){
-        setUser(user)
-      }
+        if(user){
+          console.log(user.email[0].toUpperCase())
+          setUser(user)
+
+        }
+      
     })
   }, [])
   
   function register(){
-    console.log(user)
-  createUserWithEmailAndPassword(auth,'email@abc.com','abc123')
-  .then((user) => {
+    createUserWithEmailAndPassword(auth,'email@abc.com','abc123')
+    .then((user) => {
     console.log(user)
   })
   .catch((error) =>{
@@ -31,30 +32,38 @@ function App() {
 
   }
 
-  function login(user){
+  function login(){
     signInWithEmailAndPassword(auth,'email@abc.com','abc123')
   .then(({user}) => {
     console.log(user)
-   setUser(user)
+   
+    setUser(user)
   })
   .catch((error) =>{
     console.log(error.message)
   })
   }
 
-  function logout(user){
-signOut(auth)
-console.log(user.email)
-setUser({})
+  function logout(){
+    signOut(auth)
+    setUser({})
   }
-  return (
+ 
+
+
+  
+  return(
+
+  
     <div className="App">
       <nav className='nav__container'>
 
     <button className='btn skeleton' onClick={register}>Register</button>
     <button className='btn skeleton' onClick= {login}>Login</button>
-    <button className='btn skeleton' onClick={logout}>{user.email}</button>  
- 
+    <button className='btn skeleton' onClick={logout}> {loading ?'loading...' :user.email[0].toUpperCase()}</button>  
+    <button className='btn skeleton' onClick={logout}>logout</button>  
+
+
       </nav>
     </div>
   );
