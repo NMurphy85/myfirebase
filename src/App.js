@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { auth } from './firebase/init';
 import './App.css';
 import { createUserWithEmailAndPassword, 
@@ -11,12 +11,18 @@ function App() {
   React.useEffect(() =>{
     
     onAuthStateChanged(auth, (user) =>{
-      setLoading(false)
-        if(user){
-          console.log(user.email[0].toUpperCase())
-          setUser(user)
-
+     setTimeout(() => {
+      
+       setLoading(false)
+       if(user){
+         setUser(user)
+         
+         console.log(user.email[0].toUpperCase())
         }
+        else{
+          setUser({})
+        }
+      }, 1500);
       
     })
   }, [])
@@ -58,10 +64,15 @@ function App() {
     <div className="App">
       <nav className='nav__container'>
 
-    <button className='btn skeleton' onClick={register}>Register</button>
-    <button className='btn skeleton' onClick= {login}>Login</button>
-    <button className='btn skeleton' onClick={logout}> {loading ?'loading...' :user.email[0].toUpperCase()}</button>  
-    <button className='btn skeleton' onClick={logout}>logout</button>  
+    <button className='btn' onClick={register}>Register</button>
+    <button className='btn' onClick= {login}>Login</button>
+ 
+    <button
+     className={`btn ${loading? 'skeleton': ''}`} onClick={logout}
+     >
+     {loading ? 'Waiting...' :user?.email ?
+     user.email[0].toUpperCase() : '' } 
+    </button>  
 
 
       </nav>
